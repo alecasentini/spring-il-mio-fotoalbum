@@ -8,13 +8,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.java.app.api.dto.PhotoDTO;
+import org.java.app.mvc.auth.pojo.User;
 
 
 @Entity
@@ -42,14 +45,19 @@ public class Photo {
 	@ManyToMany
 	@JsonManagedReference
 	private List<Category> categories;
+	
+	@ManyToOne
+	@JoinColumn(name="user_id", nullable=false)
+	private User user;
 
 	public Photo() { }
-	public Photo(String titolo, String descrizione, String url, boolean visibile, Category... categories) {
+	public Photo(String titolo, String descrizione, String url, boolean visibile, User user, Category... categories) {
 
 		setTitolo(titolo);
 		setDescrizione(descrizione);
 		setUrl(url);
 		setVisibile(visibile);
+		setUser(user);
 		setCategories(Arrays.asList(categories));
 	}
 	
@@ -120,7 +128,13 @@ public class Photo {
 	    setUrl(photoDto.getUrl());
 	    setVisibile(photoDto.isVisibile());
 	}
+	public User getUser() {
+	    return user;
+	}
 
+	public void setUser(User user) {
+	    this.user = user;
+	}
 	@Override
 	public String toString() {
 

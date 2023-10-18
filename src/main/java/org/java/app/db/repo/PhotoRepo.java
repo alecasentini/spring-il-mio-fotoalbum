@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PhotoRepo extends JpaRepository<Photo, Integer> {
 	List<Photo> findByTitoloContaining(String titolo);
+	List<Photo> findByTitoloContainingAndUserId(String titolo, int userId);
+    List<Photo> findAllByUserId(int userId);
 }

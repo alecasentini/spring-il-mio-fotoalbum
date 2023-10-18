@@ -1,11 +1,14 @@
 package org.java.app.mvc;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.java.app.db.pojo.Photo;
 import org.java.app.db.pojo.Category;
 import org.java.app.db.serv.CategoryService;
 import org.java.app.db.serv.PhotoService;
+import org.java.app.mvc.auth.pojo.User;
+import org.java.app.mvc.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,14 +31,29 @@ public class PhotoController {
 	
 	@Autowired
     private CategoryService categoryService;
-
+	
+	@Autowired
+    private UserService userService;
+	
 	@GetMapping
-	public String getIndex(@RequestParam(value = "titolo", required = false) String titolo, Model model) {
+	public String getIndex(@RequestParam(value = "titolo", required = false) String titolo, Model model, Principal principal) {
 	    List<Photo> photos;
-	    if (titolo != null) {
-	        photos = photoService.findByTitoloContaining(titolo);
+	    User user = (User) userService.loadUserByUsername(principal.getName());
+	    boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+	    if (isAdmin) {
+	        
+	        if (titolo != null) {
+	            photos = photoService.findByTitoloContaining(titolo);
+	        } else {
+	            photos = photoService.findAll();
+	        }
 	    } else {
-	        photos = photoService.findAll();
+	        
+	        if (titolo != null) {
+	            photos = photoService.findByTitoloContainingAndUserId(titolo, user.getId());
+	        } else {
+	            photos = photoService.findAllByUserId(user.getId());
+	        }
 	    }
 
 	    if (photos.isEmpty()) {
@@ -46,6 +64,7 @@ public class PhotoController {
 
 	    return "photo-index";
 	}
+
 
 	@GetMapping("/{id}")
 	public String getPhotoDetails(@PathVariable int id, Model model) {
@@ -63,10 +82,12 @@ public class PhotoController {
 	}
 
 	@PostMapping("/create")
-	public String createPhoto(@Valid @ModelAttribute("photo") Photo photo, BindingResult bindingResult) {
+	public String createPhoto(@Valid @ModelAttribute("photo") Photo photo, BindingResult bindingResult, Principal principal) {
 	    if (bindingResult.hasErrors()) {
 	        return "photo-create";
 	    }
+	    User user = (User) userService.loadUserByUsername(principal.getName());
+	    photo.setUser(user);
 	    photoService.save(photo);
 	    return "redirect:/photos";
 	}
@@ -79,13 +100,19 @@ public class PhotoController {
 	    model.addAttribute("categories", categories);
 	    return "photo-edit"; 
 	}
-
 	@PostMapping("/{id}/edit")
-	public String editPhoto(@PathVariable int id, @Valid @ModelAttribute("photo") Photo updatedPhoto, BindingResult bindingResult) {
+	public String editPhoto(@PathVariable int id, @Valid @ModelAttribute("photo") Photo updatedPhoto, BindingResult bindingResult, Principal principal) {
 	    if (bindingResult.hasErrors()) {
 	        return "photo-edit";
 	    }
+	    User user = (User) userService.loadUserByUsername(principal.getName());
+	    Photo existingPhoto = photoService.findById(id).get();
+	    if (existingPhoto.getUser().getId() != user.getId()) {
+	       
+	        return "error";
+	    }
 	    updatedPhoto.setId(id);
+	    updatedPhoto.setUser(user);
 
 	    photoService.save(updatedPhoto);
 	    return "redirect:/photos";
