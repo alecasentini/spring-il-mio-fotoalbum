@@ -1,9 +1,11 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import axios from "axios";
+
 const API_URL = "http://localhost:8080/api/v1.0/photos"
 const photos = ref(null);
 const searchQuery = ref('');
+
 function getAllPhotos() {
   axios.get(API_URL)
     .then(res => {
@@ -61,6 +63,7 @@ const filteredPhotos = computed(() => {
           </div>
         </div>
       </div>
+
     </div>
 
   </main>
