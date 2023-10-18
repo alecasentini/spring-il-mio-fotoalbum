@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Il Mio Fotoalbum</title>
+</head>
+<body>
+	<h1>Foto:</h1>
+	<div th:if="${noPhotos}">
+		<p>Non ci sono foto nel database</p>
+	</div>
+	<ul th:unless="${noPhotos}">
+		<li
+			th:each="photo : ${photos}"
+			th:object="${photo}"
+		>
+			Titolo: [[*{titolo}]] <br/>
+			Descrizione: [[*{descrizione}]] <br/>
+			URL: [[*{url}]] <br/>
+			Visibile: [[*{visibile}]] <br/>
+			<img th:src="@{*{url}}" alt="Foto" width="300"/>
+		</li>
+	</ul>
+</body>
+</html>
