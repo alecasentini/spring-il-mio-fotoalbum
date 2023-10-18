@@ -8,6 +8,7 @@
 <body>
 	<div class="container">
 		<h1>Foto:</h1>
+		<a href="/photos/create" class="btn btn-primary mb-3">Aggiungi una foto</a>
 		<div class="py-3">
 			<form th:action="@{/photos}" method="get">
 				<div class="w-50">
@@ -33,7 +34,7 @@
 					<div class="card-body" style="height: 250px;">
 						<h5 class="card-title text-center" th:text="*{titolo}">Titolo della foto</h5>
 						<p class="card-text" th:text="*{descrizione}">Descrizione della foto</p>
-						<p class="card-text">Visibile: [[*{visibile}]]</p>
+						<p class="card-text text-muted">Visibile: <span th:text="${photo.visibile ? 'Sì' : 'No'}"></span></p>
 						</p>
 						<a th:href="@{/photos/{id}(id=*{id})}" class="btn btn-primary">Dettagli</a>
 					</div>

@@ -5,6 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 public class Photo {
@@ -13,13 +16,19 @@ public class Photo {
 	private int id;
 
 	@Column(length = 128, nullable = false)
+	@NotBlank(message = "Il titolo è obbligatorio")
+	@Size(max = 128, message = "Il titolo non può superare i 128 caratteri")
 	private String titolo;
 
 	@Column(length = 256)
+	@NotBlank(message = "La descrizione è obbligatoria")
+	@Size(max = 256, message = "La descrizione non può superare i 256 caratteri")
 	private String descrizione;
 
 	@Column(length = 256)
+	@NotBlank(message = "L'URL è obbligatorio")
 	private String url;
+
 
 	private boolean visibile;
 
