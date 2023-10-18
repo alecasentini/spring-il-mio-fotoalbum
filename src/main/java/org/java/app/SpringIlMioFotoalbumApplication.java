@@ -20,11 +20,11 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Photo photo1 = new Photo("Titolo1", "Descrizione1", "url_foto1", true);
-		Photo photo2 = new Photo("Titolo2", "Descrizione2", "url_foto2", false);
-		Photo photo3 = new Photo("Titolo3", "Descrizione3", "url_foto3", true);
-		Photo photo4 = new Photo("Titolo4", "Descrizione4", "url_foto4", false);
-		Photo photo5 = new Photo("Titolo5", "Descrizione5", "url_foto5", true);
+		Photo photo1 = new Photo("Parigi", "Parigi", "https://www.vadoaparigi.com/wp-content/uploads/2023/01/Cosa-vedere-a-Parigi-in-5-giorni.jpg", true);
+		Photo photo2 = new Photo("Tokyo", "Tokyo", "https://www.gotokyo.org/it/plan/tokyo-outline/images/main.jpg", false);
+		Photo photo3 = new Photo("Mare", "Mare", "https://www.viaggianelsalento.it/images/benefici-del-mare.jpg", true);
+		Photo photo4 = new Photo("Montagna", "Montagna", "https://www.spazio50.org/wp-content/uploads/2022/08/montagna.jpg", false);
+		Photo photo5 = new Photo("Deserto", "Deserto", "https://staticgeopop.akamaized.net/wp-content/uploads/sites/32/2023/07/deserto-piu-grande-del-mondo.jpg?im=AspectCrop=(16,9);", true);
 
 		photoService.save(photo1);
 		photoService.save(photo2);

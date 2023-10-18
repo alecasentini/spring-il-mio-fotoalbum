@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Il Mio Fotoalbum</title>
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+	<meta charset="UTF-8">
+	<title>Il Mio Fotoalbum</title>
 </head>
 <body>
 	<h1>Foto:</h1>
 	<div th:if="${noPhotos}">
 		<p>Non ci sono foto nel database</p>
 	</div>
-	<ul th:unless="${noPhotos}">
-		<li
-			th:each="photo : ${photos}"
-			th:object="${photo}"
-		>
-			Titolo: [[*{titolo}]] <br/>
-			Descrizione: [[*{descrizione}]] <br/>
-			URL: [[*{url}]] <br/>
-			Visibile: [[*{visibile}]] <br/>
-			<img th:src="@{*{url}}" alt="Foto" width="300"/>
-		</li>
-	</ul>
+	<div class="container">
+		<div class="card-deck d-flex flex-wrap justify-content-between" th:unless="${noPhotos}">
+			<div class="card" style="width: 250px; height: 350px;" th:each="photo : ${photos}" th:object="${photo}">
+				<div style="height: 150px;">
+					<img class="card-img-top" th:src="@{*{url}}" th:alt="*{titolo}"
+						style="width: 100%; height: 100%;object-fit: cover;" />
+				</div>
+				<div class="card-body" style="height: 200px;">
+					<h5 class="card-title text-center" th:text="*{titolo}">Titolo della foto</h5>
+					<p class="card-text" th:text="*{descrizione}">Descrizione della foto</p>
+					<p class="card-text">Visibile: [[*{visibile}]]</p>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
