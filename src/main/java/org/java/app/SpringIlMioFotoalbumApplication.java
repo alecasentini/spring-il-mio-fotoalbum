@@ -4,10 +4,15 @@ import org.java.app.db.pojo.Photo;
 import org.java.app.db.pojo.Category;
 import org.java.app.db.serv.CategoryService;
 import org.java.app.db.serv.PhotoService;
+import org.java.app.mvc.auth.pojo.Role;
+import org.java.app.mvc.auth.pojo.User;
+import org.java.app.mvc.auth.service.RoleService;
+import org.java.app.mvc.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
@@ -17,6 +22,13 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private RoleService roleService;
+
+	@Autowired
+	private UserService userService;
+
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringIlMioFotoalbumApplication.class, args);
@@ -58,6 +70,21 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 		photoService.save(photo3);
 		photoService.save(photo4);
 		photoService.save(photo5);
+		
+		Role admin = new Role("ADMIN");
+		Role user = new Role("USER");
+
+		roleService.save(admin);
+		roleService.save(user);
+
+		final String pwsAdmin = new BCryptPasswordEncoder().encode("pws");
+		final String pwsUser = new BCryptPasswordEncoder().encode("pws");
+
+		User alexAdmin = new User("alexAdmin", pwsAdmin, admin, user);
+		User alexUser = new User("alexUser", pwsUser, user);
+
+		userService.save(alexAdmin);
+		userService.save(alexUser);
 
 		System.out.println("Inserimento OK!");
     }

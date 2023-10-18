@@ -9,8 +9,24 @@
     <div th:fragment="navbar">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/photos">Home</a>
-            </div>
+                <a class="navbar-brand" href="/photos">PhotoAlbum</a>
+                
+                 <div class="navbar-nav ml-auto">
+	                <div class="dropstart">
+					    <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					        <span sec:authorize="hasAnyAuthority('USER', 'ADMIN')" sec:authentication="name"></span>
+					        <span sec:authorize="!hasAnyAuthority('USER', 'ADMIN')">Accedi</span>
+					    </button>
+					    <ul class="dropdown-menu">
+					        <li sec:authorize="hasAuthority('ADMIN')"><a class="dropdown-item">Admin</a></li>
+					        <li sec:authorize="!hasAuthority('ADMIN') and hasAuthority('USER')"><a class="dropdown-item">Utente</a></li>
+					        <li><hr class="dropdown-divider"></li>
+					        <li sec:authorize="hasAnyAuthority('USER', 'ADMIN')"><a class="dropdown-item" href="/logout">Logout</a></li>
+					        <li sec:authorize="!hasAnyAuthority('USER', 'ADMIN')"><a class="dropdown-item" href="/login">Login</a></li>
+					    </ul>
+					</div>
+	            </div>
+            </div>          
         </nav>
     </div>
 

@@ -9,8 +9,8 @@
 	<div th:replace="navbar :: navbar"></div>
 	<div class="container py-3">
 		<h1>Foto:</h1>
-		<a href="/photos/create" class="btn btn-primary mb-3">Aggiungi una foto</a>
-		<a href="/categories" class="btn btn-success ms-3 mb-3">Categorie</a>
+		<a href="/photos/create" sec:authorize="hasAnyAuthority('ADMIN')" class="btn btn-primary mb-3">Aggiungi una foto</a>
+		<a href="/categories" sec:authorize="hasAnyAuthority('ADMIN')" class="btn btn-success ms-3 mb-3">Categorie</a>
 		<div class="py-3">
 			<form th:action="@{/photos}" method="get">
 				<div class="w-50">
@@ -45,8 +45,8 @@
 						    </span>
 						</p>
 						<a th:href="@{/photos/{id}(id=*{id})}" class="btn btn-primary">Dettagli</a>
-						<a th:href="@{/photos/{id}/edit(id=${photo.id})}" class="btn btn-primary">Modifica</a>
-						<form th:action="@{/photos/{id}/delete(id=*{id})}" method="post">
+						<a th:href="@{/photos/{id}/edit(id=${photo.id})}" sec:authorize="hasAnyAuthority('ADMIN')" class="btn btn-primary">Modifica</a>
+						<form th:action="@{/photos/{id}/delete(id=*{id})}" sec:authorize="hasAnyAuthority('ADMIN')" method="post">
 						    <button type="submit" class="btn btn-danger mt-1">Elimina</button>
 						</form>
 					</div>
