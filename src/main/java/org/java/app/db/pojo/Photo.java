@@ -1,10 +1,14 @@
 package org.java.app.db.pojo;
 
+import java.util.Arrays;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -29,16 +33,19 @@ public class Photo {
 	@NotBlank(message = "L'URL è obbligatorio")
 	private String url;
 
-
 	private boolean visibile;
+	
+	@ManyToMany
+	private List<Category> categories;
 
 	public Photo() { }
-	public Photo(String titolo, String descrizione, String url, boolean visibile) {
+	public Photo(String titolo, String descrizione, String url, boolean visibile, Category... categories) {
 
 		setTitolo(titolo);
 		setDescrizione(descrizione);
 		setUrl(url);
 		setVisibile(visibile);
+		setCategories(Arrays.asList(categories));
 	}
 
 	public int getId() {
@@ -70,6 +77,28 @@ public class Photo {
 	}
 	public void setVisibile(boolean visibile) {
 		this.visibile = visibile;
+	}
+	
+	public List<Category> getCategories() {
+		return categories;
+	}
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+	public boolean hasCategory(Category category) {
+		if (getCategories() == null) return false;
+		for (Category c : getCategories()) 
+			if (category.getId() == c.getId())
+				return true;
+		return false;
+	}
+	public void addCategory(Category category) {
+
+		getCategories().add(category);
+	}
+	public void removeCategory(Category category) {
+
+		getCategories().remove(category);
 	}
 
 	@Override

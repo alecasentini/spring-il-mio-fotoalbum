@@ -26,15 +26,21 @@
 		</div>
 		<div class="container">
 			<div class="card-deck d-flex flex-wrap gap-5" th:unless="${noPhotos}">
-				<div class="card" style="width: 250px; height: 400px;" th:each="photo : ${photos}" th:object="${photo}">
+				<div class="card" style="width: 250px; height: 450px;" th:each="photo : ${photos}" th:object="${photo}">
 					<div style="height: 150px;">
 						<img class="card-img-top" th:src="@{*{url}}" th:alt="*{titolo}"
 							style="width: 100%; height: 100%;object-fit: cover;" />
 					</div>
-					<div class="card-body" style="height: 250px;">
+					<div class="card-body" style="height: 300px;">
 						<h5 class="card-title text-center" th:text="*{titolo}">Titolo della foto</h5>
 						<p class="card-text" th:text="*{descrizione}">Descrizione della foto</p>
 						<p class="card-text text-muted">Visibile: <span th:text="${photo.visibile ? 'Sì' : 'No'}"></span></p>
+						</p>
+						<p class="card-text">
+						    <span>Categorie:</span> 
+						    <span th:each="category, iterStat : ${photo.categories}" th:remove="tag">
+						        <span th:text="${category.name}"></span><th:block th:if="${!iterStat.last}"> - </th:block>
+						    </span>
 						</p>
 						<a th:href="@{/photos/{id}(id=*{id})}" class="btn btn-primary">Dettagli</a>
 						<a th:href="@{/photos/{id}/edit(id=${photo.id})}" class="btn btn-primary">Modifica</a>

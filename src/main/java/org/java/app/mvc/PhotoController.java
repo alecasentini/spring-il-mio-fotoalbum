@@ -3,6 +3,8 @@ package org.java.app.mvc;
 import java.util.List;
 
 import org.java.app.db.pojo.Photo;
+import org.java.app.db.pojo.Category;
+import org.java.app.db.serv.CategoryService;
 import org.java.app.db.serv.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class PhotoController {
 
 	@Autowired
 	private PhotoService photoService;
+	
+	@Autowired
+    private CategoryService categoryService;
 
 	@GetMapping
 	public String getIndex(@RequestParam(value = "titolo", required = false) String titolo, Model model) {
@@ -51,7 +56,9 @@ public class PhotoController {
 	
 	@GetMapping("/create")
 	public String getNewPhotoForm(Model model) {
+		List<Category> categories=categoryService.findAll();
 	    model.addAttribute("photo", new Photo());
+	    model.addAttribute("categories", categories);
 	    return "photo-create";
 	}
 
@@ -66,8 +73,10 @@ public class PhotoController {
 	
 	@GetMapping("/{id}/edit")
 	public String getEditPhotoForm(@PathVariable int id, Model model) {
-	    Photo photo = photoService.findById(id);
+		List<Category> categories=categoryService.findAll();
+		Photo photo = photoService.findById(id);
 	    model.addAttribute("photo", photo);
+	    model.addAttribute("categories", categories);
 	    return "photo-edit"; 
 	}
 

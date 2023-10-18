@@ -15,7 +15,13 @@
 				style="width: 100%; height: 100%;object-fit: cover;" />
 			<div class="card-body">
 				<p class="card-text py-3"><strong>Descrizione:</strong> <span th:text="${photo.descrizione}"></span></p>
-				<p class="card-text text-muted">Visibile: <span th:text="${photo.visibile ? 'Sì' : 'No'}"></span></p>
+				<p class="card-text py-3"> <strong>Visibile: </strong> <span th:text="${photo.visibile ? 'Sì' : 'No'}"></span></p>
+				<p class="card-text py-3">
+				    <strong>Categorie:</strong> 
+				    <span th:each="category, iterStat : ${photo.categories}" th:remove="tag">
+				        <span th:text="${category.name}"></span><th:block th:if="${!iterStat.last}"> - </th:block>
+				    </span>
+				</p>
 			</div>
 		</div>
 	</div>
