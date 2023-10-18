@@ -49,7 +49,7 @@ public class PhotoController {
 
 	@GetMapping("/{id}")
 	public String getPhotoDetails(@PathVariable int id, Model model) {
-	    Photo photo = photoService.findById(id);
+	    Photo photo = photoService.findById(id).get();
 	    model.addAttribute("photo", photo);
 	    return "photo-show";
 	}
@@ -74,7 +74,7 @@ public class PhotoController {
 	@GetMapping("/{id}/edit")
 	public String getEditPhotoForm(@PathVariable int id, Model model) {
 		List<Category> categories=categoryService.findAll();
-		Photo photo = photoService.findById(id);
+		Photo photo = photoService.findById(id).get();
 	    model.addAttribute("photo", photo);
 	    model.addAttribute("categories", categories);
 	    return "photo-edit"; 

@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Category {
@@ -21,6 +23,7 @@ public class Category {
 	private String name;
 
 	@ManyToMany(mappedBy = "categories")
+	@JsonBackReference
 	private List<Photo> photos;
 
 	public Category() { }

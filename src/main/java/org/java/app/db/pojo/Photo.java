@@ -11,6 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.java.app.api.dto.PhotoDTO;
 
 
 @Entity
@@ -36,6 +40,7 @@ public class Photo {
 	private boolean visibile;
 	
 	@ManyToMany
+	@JsonManagedReference
 	private List<Category> categories;
 
 	public Photo() { }
@@ -47,6 +52,14 @@ public class Photo {
 		setVisibile(visibile);
 		setCategories(Arrays.asList(categories));
 	}
+	
+	public Photo(PhotoDTO photoDto) {
+	    setTitolo(photoDto.getTitolo());
+	    setDescrizione(photoDto.getDescrizione());
+	    setUrl(photoDto.getUrl());
+	    setVisibile(photoDto.isVisibile());
+	}
+
 
 	public int getId() {
 		return id;
@@ -99,6 +112,13 @@ public class Photo {
 	public void removeCategory(Category category) {
 
 		getCategories().remove(category);
+	}
+	
+	public void fillFromPhotoDto(PhotoDTO photoDto) {
+	    setTitolo(photoDto.getTitolo());
+	    setDescrizione(photoDto.getDescrizione());
+	    setUrl(photoDto.getUrl());
+	    setVisibile(photoDto.isVisibile());
 	}
 
 	@Override
