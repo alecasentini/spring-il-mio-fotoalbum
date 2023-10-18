@@ -63,4 +63,22 @@ public class PhotoController {
 	    photoService.save(photo);
 	    return "redirect:/photos";
 	}
+	
+	@GetMapping("/{id}/edit")
+	public String getEditPhotoForm(@PathVariable int id, Model model) {
+	    Photo photo = photoService.findById(id);
+	    model.addAttribute("photo", photo);
+	    return "photo-edit"; 
+	}
+
+	@PostMapping("/{id}/edit")
+	public String editPhoto(@PathVariable int id, @Valid @ModelAttribute("photo") Photo updatedPhoto, BindingResult bindingResult) {
+	    if (bindingResult.hasErrors()) {
+	        return "photo-edit";
+	    }
+	    updatedPhoto.setId(id);
+
+	    photoService.save(updatedPhoto);
+	    return "redirect:/photos";
+	}
 }

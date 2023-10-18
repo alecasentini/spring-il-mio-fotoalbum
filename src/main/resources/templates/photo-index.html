@@ -37,6 +37,7 @@
 						<p class="card-text text-muted">Visibile: <span th:text="${photo.visibile ? 'Sì' : 'No'}"></span></p>
 						</p>
 						<a th:href="@{/photos/{id}(id=*{id})}" class="btn btn-primary">Dettagli</a>
+						<a th:href="@{/photos/{id}/edit(id=${photo.id})}" class="btn btn-primary">Modifica</a>
 					</div>
 				</div>
 			</div>
