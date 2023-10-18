@@ -81,4 +81,10 @@ public class PhotoController {
 	    photoService.save(updatedPhoto);
 	    return "redirect:/photos";
 	}
+	
+	@PostMapping("/{id}/delete")
+	public String deletePhoto(@PathVariable int id) {
+	    photoService.deleteById(id);
+	    return "redirect:/photos";
+	}
 }

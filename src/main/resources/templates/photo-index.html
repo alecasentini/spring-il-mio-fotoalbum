@@ -6,7 +6,7 @@
 	<title>Il Mio Fotoalbum</title>
 </head>
 <body>
-	<div class="container">
+	<div class="container py-3">
 		<h1>Foto:</h1>
 		<a href="/photos/create" class="btn btn-primary mb-3">Aggiungi una foto</a>
 		<div class="py-3">
@@ -38,6 +38,9 @@
 						</p>
 						<a th:href="@{/photos/{id}(id=*{id})}" class="btn btn-primary">Dettagli</a>
 						<a th:href="@{/photos/{id}/edit(id=${photo.id})}" class="btn btn-primary">Modifica</a>
+						<form th:action="@{/photos/{id}/delete(id=*{id})}" method="post">
+						    <button type="submit" class="btn btn-danger mt-1">Elimina</button>
+						</form>
 					</div>
 				</div>
 			</div>
