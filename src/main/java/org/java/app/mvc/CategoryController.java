@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -70,4 +71,21 @@ public class CategoryController {
 
 		return "redirect:/categories";
     }
+	
+	@GetMapping("/{id}/delete")
+	public String deleteCategory(@PathVariable int id) {
+	    Category category = categoryService.findById(id);
+
+	    List<Photo> photos = photoService.findAll();
+	    for (Photo photo : photos) {
+	        if (photo.hasCategory(category)) {
+	            photo.removeCategory(category);
+	            photoService.save(photo);
+	        }
+	    }
+
+	    categoryService.delete(category);
+
+	    return "redirect:/categories";
+	}
 }

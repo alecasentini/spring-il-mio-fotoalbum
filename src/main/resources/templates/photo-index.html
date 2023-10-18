@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
 	<meta charset="UTF-8">
 	<title>Il Mio Fotoalbum</title>
 </head>
 <body>
+	<div th:replace="navbar :: navbar"></div>
 	<div class="container py-3">
 		<h1>Foto:</h1>
 		<a href="/photos/create" class="btn btn-primary mb-3">Aggiungi una foto</a>
+		<a href="/categories" class="btn btn-success ms-3 mb-3">Categorie</a>
 		<div class="py-3">
 			<form th:action="@{/photos}" method="get">
 				<div class="w-50">

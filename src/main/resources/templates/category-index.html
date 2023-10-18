@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
+	    <meta charset="ISO-8859-1">
+	    <title>Categorie</title>
+	</head>
+	<body>
+		<div th:replace="navbar :: navbar"></div>
+		<div class="container py-3">
+		    <h1>Categorie</h1>
+		    <table class="table">
+		        <thead>
+		            <tr>
+		                <th>Nome</th>
+		                <th>Azioni</th>
+		            </tr>
+		        </thead>
+		        <tbody>
+		            <tr th:each="category : ${categories}">
+		                <td th:text="${category.name}"></td>
+		                <td>
+		                    <a th:href="@{/categories/{id}/delete(id=${category.id})}" class="btn btn-danger">Cancella</a>
+		                </td>
+		            </tr>
+		        </tbody>
+		    </table>
+		    <a href="/categories/create" class="btn btn-primary">Crea nuova categoria</a>
+		</div>
+
+		<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+	</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" />
@@ -8,6 +8,7 @@
 </head>
 
 <body>
+	<div th:replace="navbar :: navbar"></div>
     <div class="container py-3">
         <h3>Modifica la Foto</h3>
         <form th:action="@{'/photos/' + *{id} + '/edit'}" th:object="${photo}" method="post">
