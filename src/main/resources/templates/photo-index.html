@@ -6,22 +6,37 @@
 	<title>Il Mio Fotoalbum</title>
 </head>
 <body>
-	<h1>Foto:</h1>
-	<div th:if="${noPhotos}">
-		<p>Non ci sono foto nel database</p>
-	</div>
 	<div class="container">
-		<div class="card-deck d-flex flex-wrap justify-content-between" th:unless="${noPhotos}">
-			<div class="card" style="width: 250px; height: 350px;" th:each="photo : ${photos}" th:object="${photo}">
-				<div style="height: 150px;">
-					<img class="card-img-top" th:src="@{*{url}}" th:alt="*{titolo}"
-						style="width: 100%; height: 100%;object-fit: cover;" />
+		<h1>Foto:</h1>
+		<div class="py-3">
+			<form th:action="@{/photos}" method="get">
+				<div class="w-50">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Cerca foto per titolo" name="titolo">
+						<div class="input-group-append ps-5">
+							<button class="btn btn-outline-secondary" type="submit">Cerca</button>
+						</div>
+					</div>
 				</div>
-				<div class="card-body" style="height: 200px;">
-					<h5 class="card-title text-center" th:text="*{titolo}">Titolo della foto</h5>
-					<p class="card-text" th:text="*{descrizione}">Descrizione della foto</p>
-					<p class="card-text">Visibile: [[*{visibile}]]</p>
-					</p>
+			</form>
+		</div>
+		<div th:if="${noPhotos}">
+			<p>Non ci sono foto nel database</p>
+		</div>
+		<div class="container">
+			<div class="card-deck d-flex flex-wrap gap-5" th:unless="${noPhotos}">
+				<div class="card" style="width: 250px; height: 400px;" th:each="photo : ${photos}" th:object="${photo}">
+					<div style="height: 150px;">
+						<img class="card-img-top" th:src="@{*{url}}" th:alt="*{titolo}"
+							style="width: 100%; height: 100%;object-fit: cover;" />
+					</div>
+					<div class="card-body" style="height: 250px;">
+						<h5 class="card-title text-center" th:text="*{titolo}">Titolo della foto</h5>
+						<p class="card-text" th:text="*{descrizione}">Descrizione della foto</p>
+						<p class="card-text">Visibile: [[*{visibile}]]</p>
+						</p>
+						<a th:href="@{/photos/{id}(id=*{id})}" class="btn btn-primary">Dettagli</a>
+					</div>
 				</div>
 			</div>
 		</div>

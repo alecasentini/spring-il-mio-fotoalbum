@@ -25,4 +25,7 @@ public class PhotoService {
 
 		return photoRepo.findById(id).get();
 	}
+	public List<Photo> findByTitoloContaining(String titolo) {
+	    return photoRepo.findByTitoloContaining(titolo);
+	}
 }
