@@ -67,8 +67,14 @@ public class PhotoController {
 
 
 	@GetMapping("/{id}")
-	public String getPhotoDetails(@PathVariable int id, Model model) {
+	public String getPhotoDetails(@PathVariable int id, Model model, Principal principal) {
 	    Photo photo = photoService.findById(id).get();
+	    User user = (User) userService.loadUserByUsername(principal.getName());
+	    boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+	    if (!isAdmin && photo.getUser().getId() != user.getId()) {
+	        
+	        return "redirect:/error";
+	    }
 	    model.addAttribute("photo", photo);
 	    return "photo-show";
 	}
@@ -82,8 +88,10 @@ public class PhotoController {
 	}
 
 	@PostMapping("/create")
-	public String createPhoto(@Valid @ModelAttribute("photo") Photo photo, BindingResult bindingResult, Principal principal) {
+	public String createPhoto(@Valid @ModelAttribute("photo") Photo photo, BindingResult bindingResult, Model model, Principal principal) {
 	    if (bindingResult.hasErrors()) {
+	    	 List<Category> categories = categoryService.findAll();
+	         model.addAttribute("categories", categories);
 	        return "photo-create";
 	    }
 	    User user = (User) userService.loadUserByUsername(principal.getName());
@@ -93,30 +101,46 @@ public class PhotoController {
 	}
 	
 	@GetMapping("/{id}/edit")
-	public String getEditPhotoForm(@PathVariable int id, Model model) {
-		List<Category> categories=categoryService.findAll();
-		Photo photo = photoService.findById(id).get();
+	public String getEditPhotoForm(@PathVariable int id, Model model, Principal principal) {
+	    Photo photo = photoService.findById(id).get();
+	    User user = (User) userService.loadUserByUsername(principal.getName());
+	    boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+	    if (!isAdmin && photo.getUser().getId() != user.getId()) {
+	        return "redirect:/error";
+	    }
+	    List<Category> categories=categoryService.findAll();
 	    model.addAttribute("photo", photo);
 	    model.addAttribute("categories", categories);
 	    return "photo-edit"; 
 	}
 	@PostMapping("/{id}/edit")
-	public String editPhoto(@PathVariable int id, @Valid @ModelAttribute("photo") Photo updatedPhoto, BindingResult bindingResult, Principal principal) {
-	    if (bindingResult.hasErrors()) {
+	public String editPhoto(@PathVariable int id, @Valid @ModelAttribute("photo") Photo updatedPhoto, BindingResult bindingResult, Model model, Principal principal) {
+	    User user = (User) userService.loadUserByUsername(principal.getName());
+	    boolean isAdmin = user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN"));
+
+	    if (!isAdmin && bindingResult.hasErrors()) {
+	    	 List<Category> categories = categoryService.findAll();
+	         model.addAttribute("categories", categories);
 	        return "photo-edit";
 	    }
-	    User user = (User) userService.loadUserByUsername(principal.getName());
+	    
 	    Photo existingPhoto = photoService.findById(id).get();
-	    if (existingPhoto.getUser().getId() != user.getId()) {
-	       
-	        return "error";
+	    if (!isAdmin && existingPhoto.getUser().getId() != user.getId()) {
+	        return "redirect:/error";
 	    }
-	    updatedPhoto.setId(id);
-	    updatedPhoto.setUser(user);
 
-	    photoService.save(updatedPhoto);
+	    if (isAdmin) {
+	        existingPhoto.setVisibile(updatedPhoto.isVisibile());
+	        photoService.save(existingPhoto);
+	    } else {
+	        updatedPhoto.setId(id);
+	        updatedPhoto.setUser(user);
+	        photoService.save(updatedPhoto);
+	    }
+
 	    return "redirect:/photos";
 	}
+
 	
 	@PostMapping("/{id}/delete")
 	public String deletePhoto(@PathVariable int id) {

@@ -11,19 +11,20 @@
 	<div th:replace="navbar :: navbar"></div>
     <div class="container py-3">
         <h3>Modifica la Foto</h3>
-        <form th:action="@{'/photos/' + *{id} + '/edit'}" th:object="${photo}" method="post">
-            <div class="mb-3">
+        <form th:action="@{'/photos/' + *{id} + '/edit'}"  th:object="${photo}" method="post">
+            <div class="mb-3" sec:authorize="!hasAuthority('ADMIN')">
                 <label for="titolo" class="form-label">Titolo</label>
                 <input type="text" th:field="*{titolo}" class="form-control" id="titolo">
 
-                <div th:if="${#fields.hasErrors('titolo')}" class="alert alert-danger mt-1">
+                <div th:if="${#fields.hasErrors('titolo')}" class="alert alert-danger mt-1" >
                     <ul>
                         <li th:each="err : ${#fields.errors('titolo')}" th:text="${err}"></li>
                     </ul>
                 </div>
+                
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" sec:authorize="!hasAuthority('ADMIN')">
                 <label for="descrizione" class="form-label">Descrizione</label>
                 <input type="text" th:field="*{descrizione}" class="form-control" id="descrizione">
 
@@ -34,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" sec:authorize="!hasAuthority('ADMIN')">
                 <label for="url" class="form-label">URL Foto</label>
                 <input type="text" th:field="*{url}" class="form-control" id="url">
 
@@ -66,19 +67,13 @@
 			        </ul>
 			    </div>
 			</div>
-			<div class="mb-3">
+			<div class="mb-3" sec:authorize="!hasAuthority('ADMIN')">
 			    <label for="categories" class="form-label">Categorie</label>
 			    <div th:each="category : ${categories}">
 			        <div class="form-check">
 			            <input class="form-check-input" type="checkbox" th:value="${category.id}" th:id="${'category' + category.id}" th:field="*{categories}">
 			            <label class="form-check-label" th:for="${'category' + category.id}" th:text="${category.name}"></label>
 			        </div>
-			    </div>
-			
-			    <div th:if="${#fields.hasErrors('categories')}" class="alert alert-danger mt-1">
-			        <ul>
-			            <li th:each="err : ${#fields.errors('categories')}" th:text="${err}"></li>
-			        </ul>
 			    </div>
 			</div>
 

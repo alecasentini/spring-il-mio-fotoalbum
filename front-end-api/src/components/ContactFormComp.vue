@@ -22,7 +22,6 @@ function submitForm() {
             <div class="mb-3">
                 <label for="email" class="form-label">Indirizzo email</label>
                 <input type="email" class="form-control" id="email" v-model="message.email" required>
-                <div id="emailHelp" class="form-text">Non condivideremo mai la tua email con nessun altro.</div>
             </div>
             <div class="mb-3">
                 <label for="content" class="form-label">Messaggio</label>

@@ -22,7 +22,7 @@ public class AuthConfig {
 	        .requestMatchers("/admin/**").hasAuthority("ADMIN")
 	        .requestMatchers("/photos/create").hasAnyAuthority("USER", "ADMIN")
 	        .requestMatchers("/photos/update/**").hasAnyAuthority("USER", "ADMIN")
-	        .requestMatchers("/photos/delete/**").hasAnyAuthority("USER", "ADMIN")
+	        .requestMatchers("/photos/delete/**").hasAuthority("USER")
 	        .requestMatchers("/categories/**").hasAuthority("ADMIN")
 	        .requestMatchers("/photos/**").hasAnyAuthority("USER", "ADMIN")
 	        .requestMatchers("/**").permitAll()
