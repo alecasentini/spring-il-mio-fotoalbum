@@ -68,11 +68,11 @@ public class SpringIlMioFotoalbumApplication implements CommandLineRunner {
 		final String pwsAdmin = new BCryptPasswordEncoder().encode("pws");
 		final String pwsUser = new BCryptPasswordEncoder().encode("pws");
 
-		User alexAdmin = new User("alexAdmin", pwsAdmin, admin, user);
+		User superAdmin = new User("SUPER-ADMIN", pwsAdmin, admin, user);
 		User alexUser = new User("alexUser", pwsUser, user);
 		User marioUser = new User("marioUser", pwsUser, user);
 		
-		userService.save(alexAdmin);
+		userService.save(superAdmin);
 		userService.save(alexUser);
 		userService.save(marioUser);
 
